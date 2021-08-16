@@ -13,11 +13,11 @@ let url = new URLSearchParams(location.search)
 let postId = url.get("key")
 
 //Get post info
-let postData = getPost(postId)
-let postComments = getCommentsByPostId(postId)
+//let postData = getPost(postId)
+//let postComments = getCommentsByPostId(postId)
 
 //Update HTML 
-renderPostHTML(postData)
+renderPostHTML(postId)
 
 let commentsQty = Object.keys(postComments).length
 if (commentsQty>2){
@@ -44,31 +44,40 @@ function getPost(postId) {
         })
     return result
 }
+//fetch post from the api
+async function fetchPost(postId){
+    let data = await fetch(`http://localhost:8080/posts/${postId}`);
+    let post = await data.json();
+    return post.data;
+}
+
 
 // Updates Post detail html (used javascript DOM methods)
-function renderPostHTML(postData){
+async function renderPostHTML(postId){
+    let data = await fetchPost(postId)
+    let postData = data.post;
     getById("title").textContent = postData.title
+    console.log('el titulo es: ',postData.title)
     getById("cover-image").src = postData.cover_image
     getById("content").textContent = postData.content
 
-    getById("user-image").src = postData.user.profile_image_90
-    getById("user-name").textContent = postData.user.name
+    getById("user-image").src = postData.profile_image_90
+    getById("user-name").textContent = postData.name
 
     getById("post-date").textContent = postData.readable_publish_date
     getById("read-time").textContent = postData.reading_time_minutes
 
     getById("reactions-count").textContent = postData.positive_reactions_count
 
-    let tagsHtml = ""
+    /*let tagsHtml = ""
     postData.tag_list.forEach((tag, idx) => {
         tagsHtml += `<button class="btn-card-${idx+2} text" type="button">#${tag}</button> `
     });
-    getById("tags-list").innerHTML = tagsHtml
-
+    getById("tags-list").innerHTML = tagsHtml*/
 }
 
 // Call to add 1 to the reaction count - PATCH
-function addToReactionCount(){
+/*function addToReactionCount(){
     let positive_reactions_count = Number(postData.positive_reactions_count) + 1
     let postReactionObject = JSON.stringify({positive_reactions_count})
     let result
@@ -84,7 +93,7 @@ function addToReactionCount(){
         async: false
         })
     return result
-}
+}*/
 
 //// Post Listeners//////
 /////////////////////////
