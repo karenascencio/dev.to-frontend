@@ -1,6 +1,6 @@
-const ENDPOINT = 'https://miproyecto-jorge-default-rtdb.firebaseio.com/posts/.json'
+const ENDPOINT = 'http://localhost:8080/posts'
 
-$('#publish-button').click( () =>{
+$('#publish-button').click( () => {
     const date = new Date()
     let readableDate = date.toDateString().split(" ").slice(1,3).join(" ")
     let publishedAt = date.toISOString()
@@ -9,15 +9,17 @@ $('#publish-button').click( () =>{
 
     let postObject = { published_timestamp: publishedAt, readable_publish_date: readableDate, 
         published_at: publishedAt, positive_reactions_count: randomReaction, reading_time_minutes: randomReading,
-        user: {
-            github_username: "benhalpern",
-            name: "Ben Halpern",
-            profile_image: "https://res.cloudinary.com/practicaldev/image/fetch/s--Y1sq1tFG--/c_fill,f_auto,fl_progressive,h_640,q_auto,w_640/https://thepracticaldev.s3.amazonaws.com/uploads/user/profile_image/1/f451a206-11c8-4e3d-8936-143d0a7e65bb.png",
-            profile_image_90: "https://res.cloudinary.com/practicaldev/image/fetch/s--DcW51A6v--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://thepracticaldev.s3.amazonaws.com/uploads/user/profile_image/1/f451a206-11c8-4e3d-8936-143d0a7e65bb.png",
-            twitter_username: "bendhalpern",
-            username: "ben",
-            website_url: "http://benhalpern.com"
-        }}
+        user: "61186fa43e53711ef14426db"
+        // {    
+        //     // github_username: "benhalpern",
+        //     // name: "Ben Halpern",
+        //     // profile_image: "https://res.cloudinary.com/practicaldev/image/fetch/s--Y1sq1tFG--/c_fill,f_auto,fl_progressive,h_640,q_auto,w_640/https://thepracticaldev.s3.amazonaws.com/uploads/user/profile_image/1/f451a206-11c8-4e3d-8936-143d0a7e65bb.png",
+        //     // profile_image_90: "https://res.cloudinary.com/practicaldev/image/fetch/s--DcW51A6v--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://thepracticaldev.s3.amazonaws.com/uploads/user/profile_image/1/f451a206-11c8-4e3d-8936-143d0a7e65bb.png",
+        //     // twitter_username: "bendhalpern",
+        //     // username: "ben",
+        //     // website_url: "http://benhalpern.com"
+        // }
+    }
 
     $('.publish-post').each( function(){
         let property = $(this).attr("name")
@@ -31,7 +33,7 @@ $('#publish-button').click( () =>{
         
         postObject = {...postObject, [property] : value}
     })
-    publishPost(postObject)
+    publishPost(JSON.stringify(postObject))
 })
 
 
@@ -82,18 +84,37 @@ $('#content-body').click(() =>{
     $('.post-aside-container').append(asideContent);
 })
 
-const publishPost = postData => {
-    $.ajax({
-        type: "POST",
-        url: ENDPOINT,
-        data:JSON.stringify( postData ),
-        success: response => {
-            let responseKey = response.name
-            window.location.href = `/post_detail.html?key=${responseKey}`
-        },
-        error: error => {
-            console.log(error)
-        },
-        async:false
-    });
+// const publishPost = postData => {
+//     $.ajax({
+//         type: "POST",
+//         url: ENDPOINT,
+//         data:JSON.stringify( postData ),
+//         success: response => {
+//             let responseKey = response.data.post._id
+//             window.location.href = `/post_detail.html?key=${responseKey}`
+//         },
+//         error: error => {
+//             console.log(error)
+//         },
+//         async:false
+//     });
+// 
+
+function publishPost(postData){
+    fetch(ENDPOINT, {
+        method: 'POST',
+        body: postData,
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+        .then( response => response.json())
+        .then( response => {
+        console.log(response)
+        let responseKey = response.data.post._id
+        window.location.href = `/post_detail.html?key=${responseKey}`
+    })
+        .catch( err => {
+            console.log(err)
+        })
 }
