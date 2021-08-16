@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Post - DEV Community 👩‍💻👨‍💻</title>
+    <link rel="stylesheet" href="/favicon.ico">
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="">
+</head>
+<body>
+    <main class="container-fluid mt-0">
+        <form class="container create-post-inner">
+            <div class="row header-nav-container">
+                <div class="col-12 col-md-9 justify-content-end justify-content-md-between header-wrapper" style="display: flex;">
+                    <div class="button-tittle-wrapper d-none d-md-flex">
+                        <span class="logo-wrapper ">
+                            <a href="/" class="site-logo" aria-label="DEV Community Home">
+								<svg width="50" height="40" viewBox="0 0 50 40"
+									xmlns="http://www.w3.org/2000/svg">
+									<rect width="50" height="40" rx="3"> </rect>
+									<path fill="white"
+										d="M19.099 23.508c0 1.31-.423 2.388-1.27 3.234-.838.839-1.942 1.258-3.312 1.258h-4.403V12.277h4.492c1.31 0 2.385.423 3.224 1.27.846.838 1.269 1.912 1.269 3.223v6.738zm-2.808 0V16.77c0-.562-.187-.981-.562-1.258-.374-.285-.748-.427-1.122-.427h-1.685v10.107h1.684c.375 0 .75-.138 1.123-.415.375-.285.562-.708.562-1.27zM28.185 28h-5.896c-.562 0-1.03-.187-1.404-.561-.375-.375-.562-.843-.562-1.404V14.243c0-.562.187-1.03.562-1.404.374-.375.842-.562 1.404-.562h5.896v2.808H23.13v3.65h3.088v2.808h-3.088v3.65h5.054V28zm7.12 0c-.936 0-1.684-.655-2.246-1.965l-3.65-13.758h3.089l2.807 10.804 2.808-10.804H41.2l-3.65 13.758C36.99 27.345 36.241 28 35.305 28z">
+									</path>
+								</svg>
+							</a>
+                            </a>
+                        </span>
+                        <div class="page-title-wrapper ml-4">
+                            <span><p>Create Post</p></span>
+                        </div>
+                    </div>
+                    <div class="buttons-close d-flex">
+                        <nav class="nav-buttons-wrapper">
+                            <ul class="d-flex">
+                                <li>
+                                    <button type="button" class="btn active">Edit</button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn" >Preview</button>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="close-editor-wrapper">
+                            <button type="button" class="btn">
+                                <a href="/">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" class="crayons-icon" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="as1mn15llu5e032u2pgzlc6yhvss2myk">
+                                        <title id="as1mn15llu5e032u2pgzlc6yhvss2myk">Close the editor</title>
+                                        <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636l4.95 4.95z"></path>
+                                    </svg>
+                                </a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row create-post-container">
+                <div class="col-lg-1">
+                </div>
+                <div class="col-12 col-md-8 col-lg-8 main-creation-container">
+                    <div class="post-content-container border rounded bg-white">
+                        <div class="post-content-header" >
+                            <div class="cover-image-input-wrapper p-1">
+                                <label for="image-url"></label>
+                                <input class="w-100  publish-post" type="text" name="cover_image" style="border: none; font-family: monospace;" placeholder="Type your image URL..." id="image-url">
+                            </div>
+                            <div class="title-container p-1">
+                                <textarea class="w-100 publish-post" type="text" name="title" style="font-weight: 700; border: none; resize: none;"  placeholder="New post title here..." id="title-input" ></textarea>
+                            </div>
+                            <div class="tags-container p-1">
+                                <label for="tag-input"></label>
+                                <input class="w-100 publish-post" type="text" name="tags" style="border: none; font-family: monospace;" id="tag-input" placeholder="Add up to 4 tags...">
+                            </div>
+                        </div>
+                        <div class="post-content-body p-1">
+                            <div class="image-button-wrapper"></div>
+                            <div class="text-container">
+                                <label for="content-body"></label>
+                                <textarea class="w-100 publish-post" type="text" name="content" placeholder="Write your post content here..." style="font-family: monospace; min-height: 890px; border: none; resize: none;" id="content-body"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-footer-container pt-3 pb-3">
+                        <button type="button" id="publish-button" class="btn-publish-post p-2 rounded text-white">Publish</button>
+                        <button type="button" class="btn-save-draft rounded p-2">Save draft</button>
+                        <svg width="24" class="crayons-icon" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="75abcb76478519ca4eb9">
+                            <title id="75abcb76478519ca4eb9">Post options</title>
+                            <path d="M12 1l9.5 5.5v11L12 23l-9.5-5.5v-11L12 1zm0 2.311L4.5 7.653v8.694l7.5 4.342 7.5-4.342V7.653L12 3.311zM12 16a4 4 0 110-8 4 4 0 010 8zm0-2a2 2 0 100-4 2 2 0 000 4z"></path>
+                        </svg>
+                        <span id="preview-tags">tag1</span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3 d-none d-md-block post-aside-container">
+                </div>
+            </div>
+        </form>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="js/new.js"></script>
+</body>
+</html>
