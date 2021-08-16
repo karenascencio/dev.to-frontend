@@ -34,8 +34,9 @@ function compareWeek(dateToCompare){
 
 
 
-function printAllCards(option='feed'){
-    let posts = bringPosts();
+async function printAllCards(option='feed'){
+    let posts = await fetchPosts();
+    console.log(posts)
     let postFiltrados;
     if(option=='feed'){
         postFiltrados=posts;
@@ -81,9 +82,21 @@ function poblateCard(article){
 
 function createCard(article){
     /*string con el formato del post*/
-    let {cover,user,name,readable_publish,title,tagList,reading_time_minutes,published_timestamp,postId,comments,positives} = article;
+            /*cover:post.cover_image,
+            user:"https://w7.pngwing.com/pngs/831/88/png-transparent-user-profile-computer-icons-user-interface-mystique-miscellaneous-user-interface-design-smile.png",
+            name:post.user.name,
+            readable_publish:post.readable_publish_date,
+            title:post.title,
+            tagList:post.tag_list,
+            reading_time_minutes:post.reading_time_minutes,
+            published_timestamp:post.published_timestamp,
+            postId:post._id,
+            tagString:post.tags,
+            positives:post.positive_reactions_count,
+            searchString:`${post.user.name} ${post.tags} ${post.title}`*/
+    let {cover,user,name,readable_publish,title,tagList,reading_time_minutes,published_timestamp,postId,positives} = article;
     let templateCard = `<div class="card br-post post-card featured-post-card mb-2">
-                        <img src=${cover} class="card-img-top d-none" alt="...">
+                        <img src=${cover} class="card-img-top d-none" alt="..." style="max-height:300px;object-fit: fill">
                         <div class="card-body">
                             <div class="d-flex c-header">
                             <img src=${user} alt="" class="br-100">
@@ -122,7 +135,6 @@ function createCard(article){
                             d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z">
                         </path>
                     </svg>
-                    <button class="comment"><span>${comments.length}</span> comment</button>
                     </div>
                     </div>
                     <div class="d-flex">
@@ -246,8 +258,32 @@ function bringPosts(){
     return postsArray;
 }
 
-function printAllCardsSearch(busqueda,order='desc'){
-    let posts = bringPosts();
+async function fetchPosts(){
+    let data = await fetch('http://localhost:8080/posts');
+    let posts = await data.json();
+    let arreglo =  posts.data.posts;
+    let postArray = arreglo.map(post =>{
+        return {
+            cover:post.cover_image,
+            user:"https://w7.pngwing.com/pngs/831/88/png-transparent-user-profile-computer-icons-user-interface-mystique-miscellaneous-user-interface-design-smile.png",
+            name:post.user.name,
+            readable_publish:post.readable_publish_date,
+            title:post.title,
+            tagList:post.tag_list,
+            reading_time_minutes:post.reading_time_minutes,
+            published_timestamp:post.published_timestamp,
+            postId:post._id,
+            tagString:post.tags,
+            positives:post.positive_reactions_count,
+            searchString:`${post.user.name} ${post.tags} ${post.title}`
+        }
+    })
+    return postArray  
+}
+
+
+async function printAllCardsSearch(busqueda,order='desc'){
+    let posts = await fetchPosts();
     let postFiltrados = posts.filter(post =>{
         return post.searchString.includes(busqueda.toLowerCase());
     }
