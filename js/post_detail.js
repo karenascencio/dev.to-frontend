@@ -17,7 +17,7 @@ let postId = url.get("key")
 //let postComments = getCommentsByPostId(postId)
 
 //Update HTML 
-renderPostHTML(postId)
+renderPostHTML(postId);
 
 let commentsQty = Object.keys(postComments).length
 if (commentsQty>2){
@@ -51,11 +51,31 @@ async function fetchPost(postId){
     return post.data;
 }
 
+async function fetchUserPosts(userId){
+    let data = await fetch(`http://localhost:8080/users/${userId}`);
+    let user = await data.json();
+    let posts = user.data.user[0].posts;
+    $('ul.list-group').empty()
+    posts.forEach((post,index)=>{
+        console.log(post.title,post.tag_list)
+        let postItem = `<li class="list-group-item" id="${index}">${post.title}<span class="card-txt"><br></span></li>`;
+        $('ul.list-group').append(postItem);
+        let tags ="<span>";
+        post.tag_list.forEach(tag => {
+            tags+=tag;
+        });
+        tags+="</span>";
+        $(`li#${index}`).append(tags)
+    })
+}
+
 
 // Updates Post detail html (used javascript DOM methods)
 async function renderPostHTML(postId){
     let data = await fetchPost(postId)
     let postData = data.post;
+    const userId = postData.user._id;
+    fetchUserPosts(userId);
     getById("title").textContent = postData.title
     console.log('el titulo es: ',postData.title)
     getById("cover-image").src = postData.cover_image
@@ -69,11 +89,19 @@ async function renderPostHTML(postId){
 
     getById("reactions-count").textContent = postData.positive_reactions_count
 
-    /*let tagsHtml = ""
+    let tagsHtml = ""
     postData.tag_list.forEach((tag, idx) => {
         tagsHtml += `<button class="btn-card-${idx+2} text" type="button">#${tag}</button> `
     });
-    getById("tags-list").innerHTML = tagsHtml*/
+    getById("tags-list").innerHTML = tagsHtml
+
+    /*$('.img-size').src = postData.user*/
+    $('.card-title').text(postData.user.name)
+    $('.card-text').text(postData.user.bio)
+    $('.list-style>li:nth-child(3)').html(`<b class="simon-txt">JOINED</b><br>${postData.user.joinDate}`)
+    $('span.c-text-color').text(postData.user.name)
+
+    /*let postItem = `<li class="list-group-item">${}<span class="card-txt"><br></span></li>`*/
 }
 
 // Call to add 1 to the reaction count - PATCH
