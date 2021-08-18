@@ -1,4 +1,4 @@
-const BASE_URL = 'https://miproyecto-jorge-default-rtdb.firebaseio.com'
+//const BASE_URL = 'https://miproyecto-jorge-default-rtdb.firebaseio.com'
 
 //Helper function to use js as selector (learning purposes :D)
 function getById(id){ return document.getElementById(id)}
@@ -17,7 +17,13 @@ let postId = url.get("key")
 //let postComments = getCommentsByPostId(postId)
 
 //Update HTML 
-renderPostHTML(postId)
+
+// A $( document ).ready() block.
+$( document ).ready(function() {
+    console.log( "ready!" );
+    renderPostHTML(postId);
+
+});
 
 let commentsQty = Object.keys(postComments).length
 if (commentsQty>2){
@@ -31,7 +37,7 @@ if (commentsQty>2){
 //////////////////////
 
 // Call to get posts by post ID (used jQuery's ajax)
-function getPost(postId) {
+/*function getPost(postId) {
     let result
     $.ajax({
         method: "GET",
@@ -43,7 +49,7 @@ function getPost(postId) {
         async: false
         })
     return result
-}
+}*/
 //fetch post from the api
 async function fetchPost(postId){
     let data = await fetch(`http://localhost:8080/posts/${postId}`);
@@ -51,29 +57,76 @@ async function fetchPost(postId){
     return post.data;
 }
 
+/*async function fetchUserPosts(userId){
+    let data = await fetch(`http://localhost:8080/users/${userId}`);
+    let user = await data.json();
+    let posts = user.data.user[0].posts;
+    $('ul.list-group').empty()
+    posts.forEach((post,index)=>{
+        console.log(post.title,post.tag_list)
+        let postItem = `<li class="list-group-item" id="${index}">${post.title}<span class="card-txt"><br></span></li>`;
+        $('ul.list-group').append(postItem);
+        let tags ="<span>";
+        post.tag_list.forEach(tag => {
+            tags+=tag;
+        });
+        tags+="</span>";
+        $(`li#${index}`).append(tags)
+    })
+}*/
+
 
 // Updates Post detail html (used javascript DOM methods)
 async function renderPostHTML(postId){
     let data = await fetchPost(postId)
     let postData = data.post;
-    getById("title").textContent = postData.title
-    console.log('el titulo es: ',postData.title)
-    getById("cover-image").src = postData.cover_image
-    getById("content").textContent = postData.content
+    /*const userId = postData.user._id;*/
+    /*fetchUserPosts(userId);*/
 
-    getById("user-image").src = postData.profile_image_90
-    getById("user-name").textContent = postData.name
+    console.log(postData);
+    const {title,content} = postData;
+    console.log(title)
+    console.log(content)
+    /*$('h1#title').text('hola como estas');*/
+    /*$('h1#title').text('hola como estas');*/
 
-    getById("post-date").textContent = postData.readable_publish_date
-    getById("read-time").textContent = postData.reading_time_minutes
+    /*console.log($('h1#title'))*/
+    /*getById("cover-image").src = postData.cover_image*/
 
-    getById("reactions-count").textContent = postData.positive_reactions_count
+    //getById("user-image").src = postData.profile_image_90
+    //getById("user-name").textContent = postData.name
 
-    /*let tagsHtml = ""
+    //getById("post-date").textContent = postData.readable_publish_date
+    //getById("read-time").textContent = postData.reading_time_minutes
+
+    /*getById("reactions-count").textContent = postData.positive_reactions_count*/
+
+    let tagsHtml = ""
     postData.tag_list.forEach((tag, idx) => {
         tagsHtml += `<button class="btn-card-${idx+2} text" type="button">#${tag}</button> `
     });
-    getById("tags-list").innerHTML = tagsHtml*/
+    getById("tags-list").innerHTML = tagsHtml
+
+    /*$('.img-size').src = postData.user*/
+    $('.card-title').text(postData.user.name)
+    $('.card-text').text(postData.user.bio)
+    $('.list-style>li:nth-child(3)').html(`<b class="simon-txt">JOINED</b><br>${postData.user.joinDate}`)
+    $('span.c-text-color').text(postData.user.name)
+
+    $('h1#title').text(postData.title);
+    $('div.card-text').text(postData.content)
+    $('img#cover-image').attr('src',postData.cover_image);
+    $('img#user-image').attr('src','https://w7.pngwing.com/pngs/81/570/png-transparent-profile-logo-computer-icons-user-user-blue-heroes-logo-thumbnail.png')    
+    $('img.img-size').attr('src','https://w7.pngwing.com/pngs/81/570/png-transparent-profile-logo-computer-icons-user-user-blue-heroes-logo-thumbnail.png')
+    console.log(postData.name)
+    $('span#user-name').text(postData.user.name)
+    $('span#post-date').text(postData.readable_publish_date)
+    console.log( postData.reading_time_minutes)
+    $('span#read-time').text(postData.reading_time_minutes)
+    $('span#reactions-count').text(postData.positive_reactions_count)
+    $('img#cover-image').css({'max-height': '300px','object-fit': 'fit'})
+
+    /*let postItem = `<li class="list-group-item">${}<span class="card-txt"><br></span></li>`*/
 }
 
 // Call to add 1 to the reaction count - PATCH
